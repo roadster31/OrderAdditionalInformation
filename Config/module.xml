@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="http://thelia.net/schema/dic/module"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_1.xsd">
+    <fullnamespace>OrderAdditionalInformation\OrderAdditionalInformation</fullnamespace>
+    <descriptive locale="en_US">
+        <title>Custommer comment on orders</title>
+        <description>This module allows your customers to add comments to their orders</description>
+
+    </descriptive>
+    <descriptive locale="fr_FR">
+        <title>Commentaires du client sur la commande</title>
+        <description>Ce module permet à vos clients d'ajouter un commentaire à leurs commandes</description>
+    </descriptive>
+    <!-- <logo></logo> -->
+    <!--<images-folder>images</images-folder>-->
+    <languages>
+        <language>en_US</language>
+        <language>fr_FR</language>
+    </languages>
+    <version></version>
+    <author>
+        <name>Franck Allimant</name>
+        <email>thelia@cqfdev.fr</email>
+    </author>
+    <type>classic</type>
+    <thelia>2.1.0</thelia>
+    <stability>other</stability>
+</module>
