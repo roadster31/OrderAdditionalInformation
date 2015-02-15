@@ -1,4 +1,6 @@
 <?php
+
 return array(
-    // 'an english string' => 'The displayed english string',
+    'Additional information' => 'Additional information',
+    'Enter here any information for our order processing team' => 'Enter here any information for our order processing team',
 );

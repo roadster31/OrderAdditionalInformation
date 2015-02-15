@@ -1,0 +1,8 @@
+{ifloop rel="additional-info"}
+    <div class="panel panel-primary">
+        <div class="panel-heading">{intl l="Customer instructions" d='orderadditionalinformation.bo.default'}</div>
+        <div class="panel-body">
+            {loop name="additional-info" type="order-additional-information" order_id=$order_id}{$INFORMATION}{/loop}
+        </div>
+    </div>
+{/ifloop}

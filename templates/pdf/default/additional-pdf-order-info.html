@@ -1,0 +1,14 @@
+<table style="padding-top: 5mm;">
+    <col style="width: 90%; padding: 3mm;" />
+    <tr>
+        <td  class="table-3-module" style="border-left:solid 3px #f6993c; padding-top: 2mm">
+            <h3>{intl l='Customer instructions' d='orderadditionalinformation.pdf.default'}</h3>
+            <p>
+                <span>{loop name="delivery-module" type="order-additional-information" order_id=$order_id}{$INFORMATION}{/loop}</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="clear-none"></td>
+    </tr>
+</table>
