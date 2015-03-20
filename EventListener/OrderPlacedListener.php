@@ -38,22 +38,29 @@ class OrderPlacedListener extends BaseAction implements EventSubscriberInterface
         //$orderPaymentForm = new OrderPayment($this->request);
 
         //$comment = trim($orderPaymentForm->getForm()->get("comment")->getData());
-        $comment = trim($this->request->get('comment'));
+        //$comment_id = trim($orderPaymentForm->getForm()->get("comment_id")->getData());
 
         // We do not have an order ID at the moment, juste store the comment in the user session.
-        $this->request->getSession()->set('additional_order_comment', $comment);
+        $comments = $this->request->get('comment', []);
+
+        $this->request->getSession()->set('additional_order_comment', $comments);
     }
 
     public function storeCustomerComment(OrderEvent $event)
     {
         // Now, we have an order ID. Store the customer comment in the session.
-        $comment = $this->request->getSession()->get('additional_order_comment');
+        $sessionComments = $this->request->getSession()->get('additional_order_comment', []);
 
-        if (!empty($comment)) {
+        foreach ($sessionComments as $identifier => $comment) {
+            if (empty($comment)) {
+                continue;
+            }
+
             $oai = new OrderAdditionalInformationModel();
             $oai
                 ->setOrderId($event->getOrder()->getId())
                 ->setInformation($comment)
+                ->setIdentifier($identifier)
                 ->save();
         }
     }
@@ -80,6 +87,12 @@ class OrderPlacedListener extends BaseAction implements EventSubscriberInterface
                         OrderAdditionalInformationModule::DOMAIN_NAME
                     ),
                 ],
+            ]
+        )->add(
+            'comment_id',
+            'hidden',
+            [
+                'required' => false
             ]
         );
     }

@@ -1,5 +1,5 @@
 <?php
 
 return array(
-    'Customer instructions' => 'Informations sur votre commande',
+    'Customer instructions' => 'Si un des produits commandés n\'est pas disponible',
 );

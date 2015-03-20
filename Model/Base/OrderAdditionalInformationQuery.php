@@ -25,10 +25,12 @@ use Thelia\Model\Order;
  * @method     ChildOrderAdditionalInformationQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildOrderAdditionalInformationQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildOrderAdditionalInformationQuery orderByInformation($order = Criteria::ASC) Order by the information column
+ * @method     ChildOrderAdditionalInformationQuery orderByIdentifier($order = Criteria::ASC) Order by the identifier column
  *
  * @method     ChildOrderAdditionalInformationQuery groupById() Group by the id column
  * @method     ChildOrderAdditionalInformationQuery groupByOrderId() Group by the order_id column
  * @method     ChildOrderAdditionalInformationQuery groupByInformation() Group by the information column
+ * @method     ChildOrderAdditionalInformationQuery groupByIdentifier() Group by the identifier column
  *
  * @method     ChildOrderAdditionalInformationQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildOrderAdditionalInformationQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -44,10 +46,12 @@ use Thelia\Model\Order;
  * @method     ChildOrderAdditionalInformation findOneById(int $id) Return the first ChildOrderAdditionalInformation filtered by the id column
  * @method     ChildOrderAdditionalInformation findOneByOrderId(int $order_id) Return the first ChildOrderAdditionalInformation filtered by the order_id column
  * @method     ChildOrderAdditionalInformation findOneByInformation(string $information) Return the first ChildOrderAdditionalInformation filtered by the information column
+ * @method     ChildOrderAdditionalInformation findOneByIdentifier(string $identifier) Return the first ChildOrderAdditionalInformation filtered by the identifier column
  *
  * @method     array findById(int $id) Return ChildOrderAdditionalInformation objects filtered by the id column
  * @method     array findByOrderId(int $order_id) Return ChildOrderAdditionalInformation objects filtered by the order_id column
  * @method     array findByInformation(string $information) Return ChildOrderAdditionalInformation objects filtered by the information column
+ * @method     array findByIdentifier(string $identifier) Return ChildOrderAdditionalInformation objects filtered by the identifier column
  *
  */
 abstract class OrderAdditionalInformationQuery extends ModelCriteria
@@ -136,7 +140,7 @@ abstract class OrderAdditionalInformationQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, ORDER_ID, INFORMATION FROM order_additional_information WHERE ID = :p0';
+        $sql = 'SELECT ID, ORDER_ID, INFORMATION, IDENTIFIER FROM order_additional_information WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -336,6 +340,35 @@ abstract class OrderAdditionalInformationQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderAdditionalInformationTableMap::INFORMATION, $information, $comparison);
+    }
+
+    /**
+     * Filter the query on the identifier column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdentifier('fooValue');   // WHERE identifier = 'fooValue'
+     * $query->filterByIdentifier('%fooValue%'); // WHERE identifier LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $identifier The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderAdditionalInformationQuery The current query, for fluid interface
+     */
+    public function filterByIdentifier($identifier = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($identifier)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $identifier)) {
+                $identifier = str_replace('*', '%', $identifier);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrderAdditionalInformationTableMap::IDENTIFIER, $identifier, $comparison);
     }
 
     /**

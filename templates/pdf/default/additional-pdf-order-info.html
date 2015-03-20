@@ -1,13 +1,23 @@
 <table style="padding-top: 5mm;">
     <col style="width: 90%; padding: 3mm;" />
     <tr>
-        <td  class="table-3-module" style="border-left:solid 3px #f6993c; padding-top: 2mm">
+        <td  class="table-3-module" style="border-left:solid 3px #80a82b; padding-top: 2mm">
             <h3>{intl l='Customer instructions' d='orderadditionalinformation.pdf.default'}</h3>
-            <p>
-                <span>{loop name="delivery-module" type="order-additional-information" order_id=$order_id}{$INFORMATION}{/loop}</span>
-            </p>
+            {loop name="delivery-module" type="order-additional-information" order_id=$order_id identifier="remplacement"}
+                {$INFORMATION}
+            {/loop}
         </td>
     </tr>
+    {ifloop rel="comment-info"}
+    <tr>
+        <td  class="table-3-module" style="border-left:solid 3px #80a82b; padding-top: 2mm">
+            <h3>{intl l='Informations complémentaires' d='orderadditionalinformation.pdf.default'}</h3>
+            {loop name="comment-info" type="order-additional-information" order_id=$order_id identifier="message"}
+                {$INFORMATION}
+            {/loop}
+        </td>
+    </tr>
+    {/ifloop}
     <tr>
         <td class="clear-none"></td>
     </tr>

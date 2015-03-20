@@ -58,7 +58,7 @@ class OrderAdditionalInformationTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class OrderAdditionalInformationTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ID field
@@ -86,6 +86,11 @@ class OrderAdditionalInformationTableMap extends TableMap
     const INFORMATION = 'order_additional_information.INFORMATION';
 
     /**
+     * the column name for the IDENTIFIER field
+     */
+    const IDENTIFIER = 'order_additional_information.IDENTIFIER';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -97,12 +102,12 @@ class OrderAdditionalInformationTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'Information', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'information', ),
-        self::TYPE_COLNAME       => array(OrderAdditionalInformationTableMap::ID, OrderAdditionalInformationTableMap::ORDER_ID, OrderAdditionalInformationTableMap::INFORMATION, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'INFORMATION', ),
-        self::TYPE_FIELDNAME     => array('id', 'order_id', 'information', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'Information', 'Identifier', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'information', 'identifier', ),
+        self::TYPE_COLNAME       => array(OrderAdditionalInformationTableMap::ID, OrderAdditionalInformationTableMap::ORDER_ID, OrderAdditionalInformationTableMap::INFORMATION, OrderAdditionalInformationTableMap::IDENTIFIER, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'INFORMATION', 'IDENTIFIER', ),
+        self::TYPE_FIELDNAME     => array('id', 'order_id', 'information', 'identifier', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -112,12 +117,12 @@ class OrderAdditionalInformationTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'Information' => 2, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'information' => 2, ),
-        self::TYPE_COLNAME       => array(OrderAdditionalInformationTableMap::ID => 0, OrderAdditionalInformationTableMap::ORDER_ID => 1, OrderAdditionalInformationTableMap::INFORMATION => 2, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'INFORMATION' => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'information' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'Information' => 2, 'Identifier' => 3, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'information' => 2, 'identifier' => 3, ),
+        self::TYPE_COLNAME       => array(OrderAdditionalInformationTableMap::ID => 0, OrderAdditionalInformationTableMap::ORDER_ID => 1, OrderAdditionalInformationTableMap::INFORMATION => 2, OrderAdditionalInformationTableMap::IDENTIFIER => 3, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'INFORMATION' => 2, 'IDENTIFIER' => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'information' => 2, 'identifier' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,6 +144,7 @@ class OrderAdditionalInformationTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', true, null, null);
         $this->addColumn('INFORMATION', 'Information', 'CLOB', false, null, null);
+        $this->addColumn('IDENTIFIER', 'Identifier', 'VARCHAR', false, 128, '');
     } // initialize()
 
     /**
@@ -290,10 +296,12 @@ class OrderAdditionalInformationTableMap extends TableMap
             $criteria->addSelectColumn(OrderAdditionalInformationTableMap::ID);
             $criteria->addSelectColumn(OrderAdditionalInformationTableMap::ORDER_ID);
             $criteria->addSelectColumn(OrderAdditionalInformationTableMap::INFORMATION);
+            $criteria->addSelectColumn(OrderAdditionalInformationTableMap::IDENTIFIER);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.ORDER_ID');
             $criteria->addSelectColumn($alias . '.INFORMATION');
+            $criteria->addSelectColumn($alias . '.IDENTIFIER');
         }
     }
 

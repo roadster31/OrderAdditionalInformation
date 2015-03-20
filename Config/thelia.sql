@@ -14,6 +14,7 @@ CREATE TABLE `order_additional_information`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER NOT NULL,
     `information` LONGTEXT,
+    `identifier` VARCHAR(128) DEFAULT '',
     PRIMARY KEY (`id`),
     INDEX `FI_order_additional_order_order_id` (`order_id`),
     CONSTRAINT `fk_order_additional_order_order_id`

@@ -72,6 +72,13 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
     protected $information;
 
     /**
+     * The value for the identifier field.
+     * Note: this column has a database default value of: ''
+     * @var        string
+     */
+    protected $identifier;
+
+    /**
      * @var        Order
      */
     protected $aOrder;
@@ -85,10 +92,23 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->identifier = '';
+    }
+
+    /**
      * Initializes internal state of OrderAdditionalInformation\Model\Base\OrderAdditionalInformation object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -376,6 +396,17 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
     }
 
     /**
+     * Get the [identifier] column value.
+     *
+     * @return   string
+     */
+    public function getIdentifier()
+    {
+
+        return $this->identifier;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param      int $v new value
@@ -443,6 +474,27 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
     } // setInformation()
 
     /**
+     * Set the value of [identifier] column.
+     *
+     * @param      string $v new value
+     * @return   \OrderAdditionalInformation\Model\OrderAdditionalInformation The current object (for fluent API support)
+     */
+    public function setIdentifier($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->identifier !== $v) {
+            $this->identifier = $v;
+            $this->modifiedColumns[OrderAdditionalInformationTableMap::IDENTIFIER] = true;
+        }
+
+
+        return $this;
+    } // setIdentifier()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -452,6 +504,10 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->identifier !== '') {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -487,6 +543,9 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OrderAdditionalInformationTableMap::translateFieldName('Information', TableMap::TYPE_PHPNAME, $indexType)];
             $this->information = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderAdditionalInformationTableMap::translateFieldName('Identifier', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->identifier = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -495,7 +554,7 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = OrderAdditionalInformationTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = OrderAdditionalInformationTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \OrderAdditionalInformation\Model\OrderAdditionalInformation object", 0, $e);
@@ -729,6 +788,9 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
         if ($this->isColumnModified(OrderAdditionalInformationTableMap::INFORMATION)) {
             $modifiedColumns[':p' . $index++]  = 'INFORMATION';
         }
+        if ($this->isColumnModified(OrderAdditionalInformationTableMap::IDENTIFIER)) {
+            $modifiedColumns[':p' . $index++]  = 'IDENTIFIER';
+        }
 
         $sql = sprintf(
             'INSERT INTO order_additional_information (%s) VALUES (%s)',
@@ -748,6 +810,9 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
                         break;
                     case 'INFORMATION':
                         $stmt->bindValue($identifier, $this->information, PDO::PARAM_STR);
+                        break;
+                    case 'IDENTIFIER':
+                        $stmt->bindValue($identifier, $this->identifier, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -820,6 +885,9 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
             case 2:
                 return $this->getInformation();
                 break;
+            case 3:
+                return $this->getIdentifier();
+                break;
             default:
                 return null;
                 break;
@@ -852,6 +920,7 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getOrderId(),
             $keys[2] => $this->getInformation(),
+            $keys[3] => $this->getIdentifier(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -905,6 +974,9 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
             case 2:
                 $this->setInformation($value);
                 break;
+            case 3:
+                $this->setIdentifier($value);
+                break;
         } // switch()
     }
 
@@ -932,6 +1004,7 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setOrderId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setInformation($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIdentifier($arr[$keys[3]]);
     }
 
     /**
@@ -946,6 +1019,7 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
         if ($this->isColumnModified(OrderAdditionalInformationTableMap::ID)) $criteria->add(OrderAdditionalInformationTableMap::ID, $this->id);
         if ($this->isColumnModified(OrderAdditionalInformationTableMap::ORDER_ID)) $criteria->add(OrderAdditionalInformationTableMap::ORDER_ID, $this->order_id);
         if ($this->isColumnModified(OrderAdditionalInformationTableMap::INFORMATION)) $criteria->add(OrderAdditionalInformationTableMap::INFORMATION, $this->information);
+        if ($this->isColumnModified(OrderAdditionalInformationTableMap::IDENTIFIER)) $criteria->add(OrderAdditionalInformationTableMap::IDENTIFIER, $this->identifier);
 
         return $criteria;
     }
@@ -1011,6 +1085,7 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
     {
         $copyObj->setOrderId($this->getOrderId());
         $copyObj->setInformation($this->getInformation());
+        $copyObj->setIdentifier($this->getIdentifier());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1098,8 +1173,10 @@ abstract class OrderAdditionalInformation implements ActiveRecordInterface
         $this->id = null;
         $this->order_id = null;
         $this->information = null;
+        $this->identifier = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

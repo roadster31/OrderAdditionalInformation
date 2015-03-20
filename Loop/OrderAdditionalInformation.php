@@ -44,14 +44,21 @@ class OrderAdditionalInformation extends BaseLoop implements PropelSearchLoopInt
     public function getArgDefinitions()
     {
         return new ArgumentCollection(
-            Argument::createIntListTypeArgument('order_id', null, true)
+            Argument::createIntListTypeArgument('order_id', null, true),
+            Argument::createAnyTypeArgument('identifier')
         );
     }
 
     public function buildModelCriteria()
     {
-        return OrderAdditionalInformationQuery::create()
+        $query = OrderAdditionalInformationQuery::create()
             ->filterByOrderId($this->getOrderId());
+
+        if (null !== $identifier = $this->getIdentifier()) {
+            $query->filterByIdentifier($identifier);
+        }
+
+        return $query;
     }
 
     public function parseResults(LoopResult $loopResult)
@@ -63,6 +70,7 @@ class OrderAdditionalInformation extends BaseLoop implements PropelSearchLoopInt
                 ->set('ID', $orderAdditionalInformation->getId())
                 ->set('ORDER_ID', $orderAdditionalInformation->getOrderId())
                 ->set('INFORMATION', $orderAdditionalInformation->getInformation())
+                ->set('IDENTIFIER', $orderAdditionalInformation->getIdentifier())
             ;
 
             $loopResult->addRow($loopResultRow);

@@ -1,8 +1,27 @@
-{ifloop rel="additional-info"}
-    <div class="panel panel-primary">
-        <div class="panel-heading">{intl l="Customer instructions" d='orderadditionalinformation.bo.default'}</div>
-        <div class="panel-body">
-            {loop name="additional-info" type="order-additional-information" order_id=$order_id}{$INFORMATION}{/loop}
+<div class="row">
+    {ifloop rel="additional-remplacement"}
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">{intl l="Si un des produits commandés n'est pas disponible" d='orderadditionalinformation.bo.default'}</div>
+            <div class="panel-body">
+                {loop name="additional-remplacement" type="order-additional-information" order_id=$order_id identifier="remplacement"}
+                    {$INFORMATION}
+                {/loop}
+            </div>
         </div>
     </div>
-{/ifloop}
+    {/ifloop}
+
+    {ifloop rel="additional-message"}
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">{intl l="Informations complémentaires" d='orderadditionalinformation.bo.default'}</div>
+            <div class="panel-body">
+                {loop name="additional-message" type="order-additional-information" order_id=$order_id identifier="message"}
+                    {$INFORMATION}
+                {/loop}
+            </div>
+        </div>
+    </div>
+    {/ifloop}
+</div>
